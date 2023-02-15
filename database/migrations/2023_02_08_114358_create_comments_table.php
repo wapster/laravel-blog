@@ -14,7 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
+            $table->text('text');
+            $table->integer('user_id');
+            $table->integer('post_id');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
