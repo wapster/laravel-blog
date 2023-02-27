@@ -4,6 +4,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="stylesheet" href="/css/admin.css">
+    <style>
+      table.table form
+      {
+        display: inline-block;
+      }
+      button.delete
+      {
+        background: transparent;
+        border: none;
+        color: #337ab7;
+        padding: 0px;
+      }
+    </style>
   <title>AdminLTE 2 | Blank Page</title>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
