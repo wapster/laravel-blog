@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use \Storage;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -59,7 +61,7 @@ class User extends Authenticatable
     {
         $user = new static;
         $user->fill($fields);
-        $user->password = bcrypt(fields['password']);
+        // $user->password = bcrypt(fields['password']);
         $user->save();
 
         return $user;
@@ -82,22 +84,27 @@ class User extends Authenticatable
     public function uploadAvatar($image)
     {
         if ($image == null) { return; }
+        
+        if($this->avatar != '') 
+        {
+            Storage::delete('upload/', $this->avatar);
+        }
 
-        Storage::delete('uploads/'. $this->image);
-        $filename = str_random(10) . '.' . $image->extension();
-        $image->saveAs('uploads', $filename);
-        $this->image = $filename;
+        Storage::delete('uploads/'. $this->avatar);
+        $filename = Str::random(10) . '.' . $image->extension();
+        $image->storeAs('uploads', $filename);
+        $this->avatar = $filename;
         $this->save();
     }
 
     public function getAvatar()
     {
-        if($this->image == null) 
+        if($this->avatar == null) 
         {
             return '/img/no-avatar.png';
         }
         
-        return 'uploads' . $this->image;
+        return '/uploads/' . $this->avatar;
     }
 
 
