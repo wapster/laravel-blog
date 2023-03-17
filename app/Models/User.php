@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -23,8 +24,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
-        'password',
+        'email'
     ];
 
     /**
@@ -61,7 +61,6 @@ class User extends Authenticatable
     {
         $user = new static;
         $user->fill($fields);
-        // $user->password = bcrypt(fields['password']);
         $user->save();
 
         return $user;
@@ -70,13 +69,22 @@ class User extends Authenticatable
     public function edit($fields)
     {
         $this->fill($fields);
-        $this->password = bcrypt(fields['password']);
+        
         $this->save();
+    }
+
+    public function generatePassword($password)
+    {
+        if($password != null)
+        {
+            $this->password = Hash::make($password);
+            $this->save();
+        }
     }
 
     public function remove()
     {
-        Storage::delete('uploads/'. $this->image);
+        $this->removeAvatar();
         $this->delete();
     }
 
@@ -85,17 +93,22 @@ class User extends Authenticatable
     {
         if ($image == null) { return; }
         
-        if($this->avatar != '') 
-        {
-            Storage::delete('upload/', $this->avatar);
-        }
+        $this->removeAvatar();
 
-        Storage::delete('uploads/'. $this->avatar);
         $filename = Str::random(10) . '.' . $image->extension();
         $image->storeAs('uploads', $filename);
         $this->avatar = $filename;
         $this->save();
     }
+
+    public function removeAvatar()
+    {
+        if($this->avatar != null)
+        {
+            Storage::delete('uploads/' . $this->avatar);
+        }
+    }
+
 
     public function getAvatar()
     {
