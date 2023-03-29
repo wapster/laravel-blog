@@ -23,6 +23,7 @@ Route::group(['prefix'=>'admin', 'namespace'=>'App\Http\Controllers\Admin'], fun
     Route::resource('/categories', 'CategoriesController');
     Route::resource('/tags', 'TagsController');
     Route::resource('/users', 'UsersController');
+    Route::resource('/posts', 'PostsController');
 });
 
 
