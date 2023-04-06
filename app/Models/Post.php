@@ -62,7 +62,7 @@ class Post extends Model
 
     public function edit($fields)
     {
-        $this->fill($fileds);
+        $this->fill($fields);
         $this->save();
     }
 
@@ -132,11 +132,11 @@ class Post extends Model
 
     public function toggleStatus($value)
     {
-        if ($value == null) 
-        { 
+        if ($value == null)
+        {
             return $this->setDraft();
         }
-        return $this->setPublic(); 
+        return $this->setPublic();
     }
 
 
@@ -167,6 +167,12 @@ class Post extends Model
     {
         $date = Carbon::createFromFormat('d/m/y', $value)->format('Y-m-d');
         $this->attributes['date'] = $date;
+    }
+
+    public function getDateAttribute($value)
+    {
+        $date = Carbon::createFromFormat('Y-m-d', $value)->format('d/m/y');
+        return $date;
     }
 
     public function getCategoryTitle()
