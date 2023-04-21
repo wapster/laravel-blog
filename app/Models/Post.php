@@ -17,7 +17,7 @@ class Post extends Model
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
 
-    protected $fillable = ['title', 'content', 'date'];
+    protected $fillable = ['title', 'content', 'date', 'description'];
 
     public function category() 
     {
@@ -187,5 +187,15 @@ class Post extends Model
         return (!$this->tags->isEmpty())
             ? implode(', ', $this->tags->pluck('title')->all())
             : 'Нет тегов';
+    }
+
+    public function getCategoryID()
+    {
+        return $this->category != null ? $this->category->id : null;
+    }
+
+    public function getDate()
+    {
+        return Carbon::createFromFormat('d/m/y', $this->date)->format('F d, Y');
     }
 }

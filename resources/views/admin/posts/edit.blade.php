@@ -43,7 +43,7 @@
               <label>Категория</label>
               {{Form::select('category_id',
                 $categories,
-                $post->category->id,
+                $post->getCategoryID(),
                 ['class' => 'form-control select2', 'placeholder' => 'Выберите категорию...'],
               )}}
             </div>
@@ -86,6 +86,11 @@
                 Черновик
               </label>
             </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Описание</label>
+              <textarea name="description" id="" cols="30" rows="10" class="form-control">{{$post->description}}</textarea>
           </div>
           <div class="col-md-12">
             <div class="form-group">
