@@ -18,6 +18,7 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index']);
 
+Route::get('/post/{slug}', [HomeController::class, 'show'])->name('post.show');
 
 Route::group(['prefix'=>'admin', 'namespace'=>'App\Http\Controllers\Admin'], function(){
     Route::get('/', 'DashboardController@index');
