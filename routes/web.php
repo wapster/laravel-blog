@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CommentsController;
 
 
 /*
@@ -30,6 +31,7 @@ Route::group(['middleware'	=>	'auth'], function(){
     Route::get('/profile', [ProfileController::class, 'index']);
     Route::post('/profile', [ProfileController::class, 'store']);
     Route::get('/logout', [AuthController::class, 'logout']);
+    Route::post('/comment', [CommentsController::class, 'store']);
 });
 
 Route::group(['middleware'	=>	'guest'], function(){
@@ -45,6 +47,9 @@ Route::group(['prefix'=>'admin', 'namespace'=>'App\Http\Controllers\Admin', 'mid
     Route::resource('/tags', 'TagsController');
     Route::resource('/users', 'UsersController');
     Route::resource('/posts', 'PostsController');
+    Route::get('/comments', 'CommentsController@index');
+    Route::get('/comments/toggle/{id}', 'CommentsController@toggle');
+	Route::delete('/comments/{id}/destroy', 'CommentsController@destroy')->name('comments.destroy');
 });
 
 
